@@ -48,12 +48,17 @@ async function run() {
 
   app.get("/find-users", async(req, res)=>{
     const users = await DataCollection.find().toArray();
-    console.log(users)
     res.send(users)  
   })
 
 
 
+  app.delete("/deleteUser",  async(req, res)=>{
+    const GetUser = req.params;
+    const check = {email:GetUser};
+    const Result = await DataCollection.deleteOne(check);
+    res.send(Result);
+  })
 
 
 

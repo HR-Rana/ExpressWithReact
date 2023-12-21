@@ -17,7 +17,6 @@ export default function Home() {
 			address: address,
 		};
 
-
 		if (name == "" || email == "" || age == " " || address == "") {
 			alert("please fillup the form");
 		} else {
@@ -26,12 +25,17 @@ export default function Home() {
 				headers: { "content-type": "application/json" },
 				body: JSON.stringify(FormData),
 			});
-      console.log(FormData)
+			console.log(FormData);
 		}
+
+		setName("");
+		setEmail("");
+		setAddress("");
+		setAge("");
 	};
 
 	return (
-		<div>
+		<div className="HomePage">
 			<form onSubmit={HandleSubmit}>
 				<input
 					type="text"
@@ -60,11 +64,9 @@ export default function Home() {
 				<input type="submit" value={"Submit Form"} />
 			</form>
 
-      <div className="show-users">
-        <ShowUsers></ShowUsers>
-      </div>
-
-
+			<div className="show-users">
+				<ShowUsers></ShowUsers>
+			</div>
 		</div>
 	);
 }
