@@ -53,11 +53,12 @@ async function run() {
 
 
 
-  app.delete("/deleteUser",  async(req, res)=>{
-    const GetUser = req.params;
+  app.delete("/deleteUser/:email",  async(req, res)=>{
+    const GetUser = req.params.email;
     const check = {email:GetUser};
     const Result = await DataCollection.deleteOne(check);
     res.send(Result);
+    console.log("request got" , GetUser)
   })
 
 
