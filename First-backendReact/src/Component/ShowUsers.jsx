@@ -3,7 +3,22 @@ import { useEffect } from "react";
 
 export default function ShowUsers() {
 	const [User, setUser] = useState([]);
+	const [update, setUpdate] = useState(false);
 
+	const [UpdateData, setUpdateData] = useState({
+		name:"",
+		email:"",
+		address:"",
+		age:"",
+		hobby:""
+	});
+
+
+	const HandleChangeForm =(e)=>{
+		setUpdateData({...UpdateData, [e.target.name]:e.target.value})
+	}
+
+	
 	useEffect(() => {
 		fetch("http://localhost:5000/find-users")
 			.then((res) => res.json())
@@ -18,14 +33,32 @@ export default function ShowUsers() {
 			if (!res.ok) {
 				alert("something went wrong..!");
 			} else {
-				alert(`do you want to delete ${email} ?`);  
+				alert(`do you want to delete ${email} ?`);
 				location.reload();
 			}
 		});
 	};
 
+
 	const updateData = (email) => {
-		alert("do you want to update data?");
+		 sessionStorage.setItem('email', JSON.stringify(email))
+		// alert("do you want to update data?");
+		setUpdate(!update)
+
+		
+	};
+	const HandleUpdateData = () => {
+		const GetEmail = sessionStorage.getItem('email');
+		console.log(GetEmail);
+
+
+		fetch(`http://localhost:5000/user-update/${GetEmail}`,{
+			method:"PUT",
+			headers:{},
+			body:JSON.stringify(UpdateData)
+		})		
+
+		setUpdate(!update)
 	};
 
 	return (
@@ -35,7 +68,6 @@ export default function ShowUsers() {
 				users.
 			</h2>
 			<br />
-
 			<div className="user-list">
 				{User.map((items, index) => {
 					return (
@@ -65,6 +97,30 @@ export default function ShowUsers() {
 					);
 				})}
 			</div>
+			{
+				update ? <div className="update-user">
+				<div className="update-box">
+					<form action="">
+						<input type="text" name="name" placeholder="name" onChange={HandleChangeForm} />
+						<input type="email" name="email" placeholder="email" required  onChange={HandleChangeForm}/>
+						<input type="text" name="address" placeholder="address" onChange={HandleChangeForm} />
+						<input type="text" name="age" placeholder="age" onChange={HandleChangeForm} />
+						<input type="text" name="hobby" placeholder="hobby"  onChange={HandleChangeForm}/>
+					</form>
+					<div className="button">
+						<button
+							onClick={(e) => {
+								setUpdate(!update);
+							}}
+						>
+							cencle
+						</button>
+						<button onClick={HandleUpdateData}>Update</button>
+					</div>
+				</div>
+			</div> : " "
+			
+			}
 		</div>
 	);
 }

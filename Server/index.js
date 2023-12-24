@@ -63,11 +63,22 @@ async function run() {
 
 
 
-app.put("/user-update", async(req, res)=>{
-    const email = req.body.params;
-    const UserMatch = {email:email};
-    const Result = await DataCollection.updateOne(UserMatch)
-})
+  app.put("/user-update/:email", async(req, res)=>{
+      const email = req.params.email;
+      const UserMatch = {email:email};
+      const newFill = {upsert:true};
+      const UpdateData ={
+        $set:{
+          name:req.body.name,
+          email:req.body.email,
+          address:req.body.address,
+          age:req.body.age,
+          hobby:req.body.hobby
+        },
+      }
+      const Result = await DataCollection.updateOne(UserMatch, UpdateData, newFill);
+     res.send(Result)
+  })
 
 
     // Send a ping to confirm a successful connection
