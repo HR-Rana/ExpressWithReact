@@ -13,22 +13,19 @@ export default function ShowUsers() {
 	const deleteData = (email) => {
 		fetch(`http://localhost:5000/deleteUser/${email}`, {
 			method: "DELETE",
-		})
-		.then(res => {
-			console.log(res)
+		}).then((res) => {
+			console.log(res);
 			if (!res.ok) {
-				alert("something went wrong..!")
-			}else{
+				alert("something went wrong..!");
+			} else {
+				alert(`do you want to delete ${email} ?`);  
 				location.reload();
 			}
-		})
-
-		
-	
+		});
 	};
 
 	const updateData = (email) => {
-		alert("do you want to update data?")
+		alert("do you want to update data?");
 	};
 
 	return (
