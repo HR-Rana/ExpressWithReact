@@ -63,7 +63,11 @@ async function run() {
 
 
 
-
+app.put("/user-update", async(req, res)=>{
+    const email = req.body.params;
+    const UserMatch = {email:email};
+    const Result = await DataCollection.updateOne(UserMatch)
+})
 
 
     // Send a ping to confirm a successful connection
