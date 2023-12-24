@@ -58,7 +58,7 @@ async function run() {
     const check = {email:GetUser};
     const Result = await DataCollection.deleteOne(check);
     res.send(Result);
-    console.log("request got" , GetUser)
+    console.log("the Deleted user Is" , GetUser)
   })
 
 

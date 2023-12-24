@@ -26,7 +26,7 @@ export default function Home() {
 				body: JSON.stringify(FormData),
 			});
 			console.log(FormData);
-			window.reload();
+			location.reload();
 		}
 
 		setName("");

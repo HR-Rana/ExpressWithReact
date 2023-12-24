@@ -13,21 +13,30 @@ export default function ShowUsers() {
 	const deleteData = (email) => {
 		fetch(`http://localhost:5000/deleteUser/${email}`, {
 			method: "DELETE",
-			headers: { "content-type": "application/json" },
-		});
+		})
+		.then(res => {
+			console.log(res)
+			if (!res.ok) {
+				alert("something went wrong..!")
+			}else{
+				location.reload();
+			}
+		})
 
-		console.log(email);
-		window.reload();
-		alert("Data Deleted Successfully..");
+		
+	
 	};
 
 	const updateData = (email) => {
-		console.log(email);
+		alert("do you want to update data?")
 	};
 
 	return (
 		<div className="user-page">
-			<h2>hello there is <span style={{color:"red"}}>{User.length}</span> users.</h2>
+			<h2>
+				hello there is <span style={{ color: "red" }}>{User.length}</span>{" "}
+				users.
+			</h2>
 			<br />
 
 			<div className="user-list">
@@ -44,13 +53,13 @@ export default function ShowUsers() {
 							<div className="buttons">
 								<button
 									style={{ backgroundColor: "red" }}
-									onClick={() => updateData(items.email)}
+									onClick={() => deleteData(items.email)}
 								>
 									Delete
 								</button>
 								<button
 									style={{ backgroundColor: "royalblue" }}
-									onClick={() => deleteData(items.email)}
+									onClick={(e) => updateData(items.email)}
 								>
 									Update
 								</button>
