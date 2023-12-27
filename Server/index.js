@@ -63,22 +63,54 @@ async function run() {
 
 
 
-  app.put("/user-update/:email", async(req, res)=>{
-      const email = req.params.email;
-      const UserMatch = {email:email};
-      const newFill = {upsert:true};
-      const UpdateData ={
-        $set:{
-          name:req.body.name,
-          email:req.body.email,
-          address:req.body.address,
-          age:req.body.age,
-          hobby:req.body.hobby
-        },
-      }
-      const Result = await DataCollection.updateOne(UserMatch, UpdateData, newFill);
-     res.send(Result)
-  })
+  // app.put("/user-update/:email", async(req, res)=>{
+  //     const email = req.params.email;
+  //     console.log("update request from", email)
+  //     const UserMatch = {email:email};
+  //     const newFill = {upsert:true};
+  //     const UpdateData ={
+  //       $set:{
+  //         name:req.body.name,
+  //         email:req.body.email,
+  //         address:req.body.address,
+  //         age:req.body.age,
+  //         hobby:req.body.hobby
+  //       },
+  //     }
+  //     const Result = await DataCollection.updateOne(UserMatch, UpdateData, newFill);
+  //     console.log(Result)
+  //    res.send(Result)
+  // })
+
+
+  app.put("/user-update/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const userMatch = { email: email };
+    const updateData = {
+      $set: {
+        name: req.body.name,
+        email: req.body.email,
+        address: req.body.address,
+        age: req.body.age,
+        hobby: req.body.hobby
+      },
+    };
+
+    const result = await DataCollection.updateOne(userMatch, updateData);
+    res.send(result);
+    console.log(result)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+
+
+
+
 
 
     // Send a ping to confirm a successful connection

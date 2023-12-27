@@ -6,19 +6,17 @@ export default function ShowUsers() {
 	const [update, setUpdate] = useState(false);
 
 	const [UpdateData, setUpdateData] = useState({
-		name:"",
-		email:"",
-		address:"",
-		age:"",
-		hobby:""
+		name: "",
+		email: "",
+		address: "",
+		age: "",
+		hobby: "",
 	});
 
+	const HandleChangeForm = (e) => {
+		setUpdateData({ ...UpdateData, [e.target.name]: e.target.value });
+	};
 
-	const HandleChangeForm =(e)=>{
-		setUpdateData({...UpdateData, [e.target.name]:e.target.value})
-	}
-
-	
 	useEffect(() => {
 		fetch("http://localhost:5000/find-users")
 			.then((res) => res.json())
@@ -39,26 +37,29 @@ export default function ShowUsers() {
 		});
 	};
 
-
 	const updateData = (email) => {
-		 sessionStorage.setItem('email', JSON.stringify(email))
+		sessionStorage.setItem("email", JSON.stringify(email));
 		// alert("do you want to update data?");
-		setUpdate(!update)
-
-		
+		setUpdate(!update);
 	};
 	const HandleUpdateData = () => {
-		const GetEmail = sessionStorage.getItem('email');
-		console.log(GetEmail);
+		const GetEmail = sessionStorage.getItem("email");
+		const Email = JSON.parse(GetEmail);
+		console.log(Email);
 
+		fetch(`http://localhost:5000/user-update/${Email}`, {
+			method: "PUT",
+			headers: { "content-type": "application/json" },
+			body: JSON.stringify(UpdateData),
+		})
+			.then(() => {
+				console.log("data Updated");
+			})
+			.catch((err) => {
+				alert(err.message);
+			});
 
-		fetch(`http://localhost:5000/user-update/${GetEmail}`,{
-			method:"PUT",
-			headers:{},
-			body:JSON.stringify(UpdateData)
-		})		
-
-		setUpdate(!update)
+		setUpdate(!update);
 	};
 
 	return (
@@ -97,30 +98,57 @@ export default function ShowUsers() {
 					);
 				})}
 			</div>
-			{
-				update ? <div className="update-user">
-				<div className="update-box">
-					<form action="">
-						<input type="text" name="name" placeholder="name" onChange={HandleChangeForm} />
-						<input type="email" name="email" placeholder="email" required  onChange={HandleChangeForm}/>
-						<input type="text" name="address" placeholder="address" onChange={HandleChangeForm} />
-						<input type="text" name="age" placeholder="age" onChange={HandleChangeForm} />
-						<input type="text" name="hobby" placeholder="hobby"  onChange={HandleChangeForm}/>
-					</form>
-					<div className="button">
-						<button
-							onClick={(e) => {
-								setUpdate(!update);
-							}}
-						>
-							cencle
-						</button>
-						<button onClick={HandleUpdateData}>Update</button>
+			{update ? (
+				<div className="update-user">
+					<div className="update-box">
+						<form action="">
+							<input
+								type="text"
+								name="name"
+								placeholder="name"
+								onChange={HandleChangeForm}
+							/>
+							<input
+								type="email"
+								name="email"
+								placeholder="email"
+								required
+								onChange={HandleChangeForm}
+							/>
+							<input
+								type="text"
+								name="address"
+								placeholder="address"
+								onChange={HandleChangeForm}
+							/>
+							<input
+								type="text"
+								name="age"
+								placeholder="age"
+								onChange={HandleChangeForm}
+							/>
+							<input
+								type="text"
+								name="hobby"
+								placeholder="hobby"
+								onChange={HandleChangeForm}
+							/>
+						</form>
+						<div className="button">
+							<button
+								onClick={(e) => {
+									setUpdate(!update);
+								}}
+							>
+								cencle
+							</button>
+							<button onClick={HandleUpdateData}>Update</button>
+						</div>
 					</div>
 				</div>
-			</div> : " "
-			
-			}
+			) : (
+				" "
+			)}
 		</div>
 	);
 }
