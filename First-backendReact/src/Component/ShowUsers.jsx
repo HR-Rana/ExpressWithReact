@@ -53,12 +53,12 @@ export default function ShowUsers() {
 			body: JSON.stringify(UpdateData),
 		})
 			.then(() => {
+				window.location.reload();
 				console.log("data Updated");
 			})
 			.catch((err) => {
 				alert(err.message);
 			});
-
 		setUpdate(!update);
 	};
 
